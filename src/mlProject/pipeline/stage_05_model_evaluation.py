@@ -1,28 +1,25 @@
 from mlProject.config.configuration import ConfigurationManager
-from mlProject.components.data_ingestion import DataIngestion
+from mlProject.components.model_evaluation import ModelEvaluation
 from mlProject import logger
 
+STAGE_NAME = "Model evaluation stage"
 
-
-STAGE_NAME = "Data Ingestion stage"
-
-class DataIngestionTrainingPipeline:
+class ModelEvaluationTrainingPipeline:
     def __init__(self):
         pass
 
     def main(self):
         config = ConfigurationManager()
-        data_ingestion_config = config.get_data_ingestion_config()
-        data_ingestion = DataIngestion(config=data_ingestion_config)
-        data_ingestion.download_file()
-        data_ingestion.extract_zip_file()
+        model_evaluation_config = config.get_model_evaluation_config()
+        model_evaluation_config = ModelEvaluation(config=model_evaluation_config)
+        model_evaluation_config.log_into_mlflow()
 
 
-    
+
 if __name__ == '__main__':
     try:
         logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
-        obj = DataIngestionTrainingPipeline()
+        obj = ModelEvaluationTrainingPipeline()
         obj.main()
         logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
     except Exception as e:
